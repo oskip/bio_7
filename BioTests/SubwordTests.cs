@@ -12,31 +12,31 @@ namespace BioTests
         [TestMethod]
         public void CanTakePrefixFromSubword()
         {
-            var sut = new Subword(TestUtils.CorrectSubword);
+            var sut = new Subword(TestUtils.SubwordTests.CorrectSubword);
             var prefix = sut.GetPrefix();
-            Assert.AreEqual(TestUtils.CorrectSubwordsPrefix, prefix.ToString());
+            Assert.AreEqual(TestUtils.SubwordTests.CorrectSubwordsPrefix, prefix.ToString());
         }
 
         [TestMethod]
         public void CanTakePostfixFromSubword()
         {
-            var sut = new Subword(TestUtils.CorrectSubword);
+            var sut = new Subword(TestUtils.SubwordTests.CorrectSubword);
             var postfix = sut.GetPostfix();
-            Assert.AreEqual(TestUtils.CorrectSubwordsPostfix, postfix.ToString());
+            Assert.AreEqual(TestUtils.SubwordTests.CorrectSubwordsPostfix, postfix.ToString());
         }
 
         [TestMethod]
         public void CanFormASubwordOfLength5()
         {
-            var sut = new Subword(TestUtils.CorrectSubwordFiveString);
-            Assert.AreEqual(TestUtils.CorrectSubwordFiveString, sut.ToString());
+            var sut = new Subword(TestUtils.SubwordTests.CorrectSubwordFiveString);
+            Assert.AreEqual(TestUtils.SubwordTests.CorrectSubwordFiveString, sut.ToString());
         }
 
         [TestMethod]
         [ExpectedException(typeof(BadSymbolException))]
         public void ThrowsExceptionWhenBadSymbolInConstructor()
         {
-            var sut = new Subword(TestUtils.IncorrectSubword);
+            var sut = new Subword(TestUtils.SubwordTests.IncorrectSubword);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace BioTests
         [TestMethod]
         public void CanGenerateSubwordsFromInputString()
         {
-            var sut = SubwordFactory.CreateFromInput(TestUtils.CorrectInputString);
+            var sut = SubwordFactory.CreateFromInput(TestUtils.SubwordTests.CorrectInputString);
             CollectionAssert.AllItemsAreNotNull(sut.ToList());
         }
 
@@ -57,14 +57,14 @@ namespace BioTests
         [ExpectedException(typeof(InconsistentSubwordLengthException))]
         public void ThrowsExceptionWhenOneOfInputSubwordsIsTooLong()
         {
-            var sut = SubwordFactory.CreateFromInput(TestUtils.InputStringWithOneTooLong);
+            var sut = SubwordFactory.CreateFromInput(TestUtils.SubwordTests.InputStringWithOneTooLong);
         }
 
         [TestMethod]
         [ExpectedException(typeof (InconsistentSubwordLengthException))]
         public void ThrowsExceptionWhenOneOfInputSubwordsIsTooShort()
         {
-            var sut = SubwordFactory.CreateFromInput(TestUtils.InputStringWithOneTooShort);
+            var sut = SubwordFactory.CreateFromInput(TestUtils.SubwordTests.InputStringWithOneTooShort);
             Assert.Equals(sut, "a");
         }
     }

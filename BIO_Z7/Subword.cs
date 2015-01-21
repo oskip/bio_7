@@ -7,7 +7,7 @@ namespace BIO_Z7
     public class Subword
     {
         private readonly string _inputString;
-        private readonly ArrayList _validChars = new ArrayList(){'A', 'C', 'T', 'G'};
+        public static readonly ArrayList ValidChars = new ArrayList {'A', 'C', 'T', 'G'};
 
         public Subword(string inputString)
         {
@@ -23,7 +23,7 @@ namespace BIO_Z7
 
         private bool IsAValidSubword(string inputString)
         {
-            return inputString.All(c => _validChars.Contains(c));
+            return inputString.All(c => ValidChars.Contains(c));
         }
 
         public string GetPrefix()

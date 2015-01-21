@@ -1,6 +1,6 @@
 ﻿namespace BIO_Z7
 {
-    partial class Form1
+    partial class Form
     {
         /// <summary>
         /// Required designer variable.
@@ -28,12 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.input = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            // 
+            // input
+            // 
+            this.input.Location = new System.Drawing.Point(0, 0);
+            this.input.Margin = new System.Windows.Forms.Padding(0);
+            this.input.Name = "input";
+            this.input.Size = new System.Drawing.Size(548, 272);
+            this.input.TabIndex = 1;
+            this.input.Text = "";
+            // 
+            // Form
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(549, 267);
+            this.Controls.Add(this.input);
+            this.Name = "Form";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.RichTextBox input;
+
     }
 }
 

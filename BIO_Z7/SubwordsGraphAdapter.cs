@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using QuickGraph;
 
@@ -7,7 +6,7 @@ namespace BIO_Z7
 {
     public class SubwordsGraphAdapter
     {
-        public static SubwordsGraph GetGraph(ICollection<Subword> subwords)
+        public static SubwordsGraph GetGraph(IEnumerable<Subword> subwords)
         {
             var nodeSet = new HashSet<string>();
             foreach (var subword in subwords)
@@ -22,7 +21,7 @@ namespace BIO_Z7
             return graph;
         }
 
-        private static SubwordsGraph AddEgdesBetweenSubwords(SubwordsGraph graph, ICollection<Subword> subwords, HashSet<string> nodeNameSet)
+        private static SubwordsGraph AddEgdesBetweenSubwords(SubwordsGraph graph, IEnumerable<Subword> subwords, HashSet<string> nodeNameSet)
         {
             foreach (var subword in subwords)
             {
@@ -35,5 +34,5 @@ namespace BIO_Z7
             }
             return graph;
         }
-    }
+    } 
 }

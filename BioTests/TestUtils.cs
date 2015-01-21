@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using BIO_Z7;
 using QuickGraph;
@@ -6,6 +7,28 @@ namespace BioTests
 {
     public class TestUtils
     {
+        public class SubwordTests
+        {
+            public static string CorrectSubword = "ACTGGATA";
+            public static string CorrectSubwordsPrefix = "ACTGGAT";
+            public static string CorrectSubwordsPostfix = "CTGGATA";
+            public static string IncorrectSubword = "ACTZGATA";
+            public static string CorrectSubwordFiveString = "ACTGG";
+            public static string CorrectInputString = "ACT-GAC-TGG-TTA-ACG";
+
+            public static List<Subword> CorrectInputSubwords = new List<Subword>()
+            {
+                new Subword("ACT"),
+                new Subword("GAC"),
+                new Subword("TGG"),
+                new Subword("TTA"),
+                new Subword("ACG")
+            };
+
+            public static string InputStringWithOneTooShort = "TAT-GA-GCA-ACT-GCC";
+            public static string InputStringWithOneTooLong = "GCA-CTA-AGCG-TTA-ACG";
+        }
+
         public static List<Subword> CorrectSubwords = new List<Subword>()
         {
             new Subword("AAA"),
@@ -40,7 +63,7 @@ namespace BioTests
             new TaggedEdge<string, string>("TA", "AA", "A")
         };
 
-        public static List<Subword> SubwordsWithEulerianPath = new List<Subword>()
+        public static List<Subword> SubwordsWithEulerianTrail = new List<Subword>()
         {
             new Subword("CGT"),
             new Subword("GTG"),
@@ -51,7 +74,17 @@ namespace BioTests
             new Subword("GTT"),
         };
 
-        public static List<Subword> SubwordsWithoutEulerianPath = new List<Subword>()
+        public static List<Subword> SubwordsWithTrivialEulerianTrail = new List<Subword>()
+        {
+            new Subword("ACT"),
+            new Subword("CTT"),
+            new Subword("TTA"),
+            new Subword("TAG")
+        };
+
+        public static string TrivialSequence = "TTAG";
+
+        public static List<Subword> SubwordsWithoutEulerianTrail = new List<Subword>()
         {
             new Subword("ACG"),
             new Subword("CGT"),
@@ -60,24 +93,5 @@ namespace BioTests
             new Subword("TCA"),
             new Subword("TAA"),
         };
-
-        public static string CorrectSubword = "ACTGGATA";
-        public static string CorrectSubwordsPrefix = "ACTGGAT";
-        public static string CorrectSubwordsPostfix = "CTGGATA";
-        public static string IncorrectSubword = "ACTZGATA";
-        public static string CorrectSubwordFiveString = "ACTGG";
-        public static string CorrectInputString = "ACT-GAC-TGG-TTA-ACG";
-
-        public static List<Subword> CorrectInputSubwords = new List<Subword>()
-        {
-            new Subword("ACT"),
-            new Subword("GAC"),
-            new Subword("TGG"),
-            new Subword("TTA"),
-            new Subword("ACG")
-        };
-
-        public static string InputStringWithOneTooShort = "TAT-GA-GCA-ACT-GCC";
-        public static string InputStringWithOneTooLong = "GCA-CTA-AGCG-TTA-ACG";
     }
 }

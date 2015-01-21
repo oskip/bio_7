@@ -66,6 +66,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="SubwordGraphTests.cs" />
     <Compile Include="TestUtils.cs" />
     <None Include="packages.config" />
     <Compile Include="SubwordTests.cs" />
