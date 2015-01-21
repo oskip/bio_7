@@ -84,6 +84,25 @@ namespace BIO_Z7
 
         public CompensationResult GetDnaSequenceWithCompensation()
         {
+            //B³êdy pozytywne - usuniêcie losowego s³owa            
+            foreach (var subword in SubwordsCollection.ToList())
+            {
+                var shortenedSubwordsCollection = SubwordsCollection.ToList();
+                shortenedSubwordsCollection.Remove(subword);
+                var shortenedGraph = SubwordsGraphAdapter.GetGraph(shortenedSubwordsCollection);
+                try
+                {
+                    return new CompensationResult()
+                    {
+                        Graph = shortenedGraph,
+                        DnaSequence = shortenedGraph.GetDnaSequence(),
+                        CompensatingSubword = null,
+                        DeletedSubword = subword.ToString()
+                    };
+                }
+                catch (NoEulerianTrailException) { }
+            }
+            //B³êdy negatywne - dodanie losowego s³owa
             foreach (var subword in SubwordFactory.GenerateAllPossible(k))
             {
                 var extenderSubwordsCollection = SubwordsCollection.ToList();
@@ -101,22 +120,27 @@ namespace BIO_Z7
                 }
                 catch (NoEulerianTrailException) {}
             }
-            foreach (var subword in SubwordsCollection.ToList())
+            //B³êdy pozytywne i negatywne - usuniêcie i dodanie losowego s³owa
+            foreach (var deletedSubword in SubwordsCollection.ToList())
             {
-                var shortenedSubwordsCollection = SubwordsCollection.ToList();
-                shortenedSubwordsCollection.Remove(subword);
-                var shortenedGraph = SubwordsGraphAdapter.GetGraph(shortenedSubwordsCollection);
-                try
+                foreach (var addedSubword in SubwordFactory.GenerateAllPossible(k))
                 {
-                    return new CompensationResult()
+                    var alteredSubwordsCollection = SubwordsCollection.ToList();
+                    alteredSubwordsCollection.Remove(deletedSubword);                    
+                    alteredSubwordsCollection.Add(addedSubword);
+                    var extendedGraph = SubwordsGraphAdapter.GetGraph(alteredSubwordsCollection);
+                    try
                     {
-                        Graph = shortenedGraph,
-                        DnaSequence = shortenedGraph.GetDnaSequence(),
-                        CompensatingSubword = null,
-                        DeletedSubword = subword.ToString()
-                    };
+                        return new CompensationResult()
+                        {
+                            Graph = extendedGraph,
+                            DnaSequence = extendedGraph.GetDnaSequence(),
+                            CompensatingSubword = addedSubword.ToString(),
+                            DeletedSubword = deletedSubword.ToString()
+                        };
+                    }
+                    catch (NoEulerianTrailException) {}
                 }
-                catch (NoEulerianTrailException) { }
             }
             throw new NoEulerianTrailException();
         }

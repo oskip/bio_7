@@ -71,7 +71,11 @@ namespace BIO_Z7
                 var collection = SubwordFactory.CreateFromInput(inputBox.Text);
                 var graph = SubwordsGraphAdapter.GetGraph(collection);
                 var result = graph.GetDnaSequenceWithCompensation();
-                if (result.CompensatingSubword != null)
+                if (result.CompensatingSubword != null && result.DeletedSubword != null)
+                    MessageBox.Show(string.Format(@"Kompensacja przez usunięcie: {0} oraz dodanie {1} dała sekwencję: {2}", 
+                        result.DeletedSubword.ToString(), result.CompensatingSubword.ToString(), result.DnaSequence),
+                        @"Wynik", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else if (result.CompensatingSubword != null)
                     MessageBox.Show(string.Format(@"Kompensacja przez dodanie: {0} dała sekwencję: {1}", result.CompensatingSubword.ToString(), result.DnaSequence), 
                                     @"Wynik", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 else if (result.DeletedSubword != null)
