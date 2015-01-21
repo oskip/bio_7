@@ -9,15 +9,16 @@ namespace BIO_Z7
         public static SubwordsGraph GetGraph(IEnumerable<Subword> subwords)
         {
             var nodeSet = new HashSet<string>();
-            foreach (var subword in subwords)
+            var subwordsCollection = subwords as IList<Subword> ?? subwords.ToList();
+            foreach (var subword in subwordsCollection)
             {
                 nodeSet.Add(subword.GetPrefix());
                 nodeSet.Add(subword.GetPostfix());
             }
 
-            var graph = new SubwordsGraph();
+            var graph = new SubwordsGraph {SubwordsCollection = subwordsCollection};
             graph.AddVertexRange(nodeSet);
-            graph = AddEgdesBetweenSubwords(graph, subwords, nodeSet);
+            graph = AddEgdesBetweenSubwords(graph, subwordsCollection, nodeSet);
             return graph;
         }
 

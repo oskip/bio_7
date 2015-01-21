@@ -60,6 +60,7 @@
     <Compile Include="Exceptions\BadSymbolException.cs" />
     <Compile Include="Exceptions\InconsistentSubwordLengthException.cs" />
     <Compile Include="Exceptions\NoEulerianTrailException.cs" />
+    <Compile Include="Exceptions\IncompleteEulerianTrailException.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +84,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

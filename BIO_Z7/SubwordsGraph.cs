@@ -9,6 +9,17 @@ namespace BIO_Z7
 {
     public class SubwordsGraph : AdjacencyGraph<string, TaggedEdge<string, string>>
     {
+        public IEnumerable<Subword> SubwordsCollection { get; set; }
+
+        public int k
+        {
+            get
+            {
+                var firstOrDefault = SubwordsCollection.FirstOrDefault();
+                return firstOrDefault != null ? firstOrDefault.Length : 0;
+            }
+        }
+
         public LinkedList<string> GetEulerianTrail()
         {
             var currentVertex = this.OddVertices().Count == 0
@@ -39,6 +50,7 @@ namespace BIO_Z7
                     currentVertex = neighbourVertex;
                 }
             }
+            if (Edges.Count() != eulerianVertices.Count) throw new NoEulerianTrailException();
             return eulerianVertices;
         }
 
@@ -47,7 +59,8 @@ namespace BIO_Z7
             try
             {
                 return Vertices.Single(v => OutDegree(v) - InDegree(v) > 0);
-            } catch(InvalidOperationException e) {throw new NoEulerianTrailException();}
+            }
+            catch (InvalidOperationException e) { throw new NoEulerianTrailException(); }
         }
 
         private int InDegree(string vertex)
@@ -67,6 +80,53 @@ namespace BIO_Z7
         {
             var eulerianTrail = GetEulerianTrail();
             return TrailToDnaSequence(eulerianTrail);
+        }
+
+        public CompensationResult GetDnaSequenceWithCompensation()
+        {
+            foreach (var subword in SubwordFactory.GenerateAllPossible(k))
+            {
+                var extenderSubwordsCollection = SubwordsCollection.ToList();
+                extenderSubwordsCollection.Add(subword);
+                var extendedGraph = SubwordsGraphAdapter.GetGraph(extenderSubwordsCollection);
+                try
+                {
+                    return new CompensationResult()
+                    {
+                        Graph = extendedGraph,
+                        DnaSequence = extendedGraph.GetDnaSequence(),
+                        CompensatingSubword = subword.ToString(),
+                        DeletedSubword = null
+                    };
+                }
+                catch (NoEulerianTrailException) {}
+            }
+            foreach (var subword in SubwordsCollection.ToList())
+            {
+                var shortenedSubwordsCollection = SubwordsCollection.ToList();
+                shortenedSubwordsCollection.Remove(subword);
+                var shortenedGraph = SubwordsGraphAdapter.GetGraph(shortenedSubwordsCollection);
+                try
+                {
+                    return new CompensationResult()
+                    {
+                        Graph = shortenedGraph,
+                        DnaSequence = shortenedGraph.GetDnaSequence(),
+                        CompensatingSubword = null,
+                        DeletedSubword = subword.ToString()
+                    };
+                }
+                catch (NoEulerianTrailException) { }
+            }
+            throw new NoEulerianTrailException();
+        }
+
+        public struct CompensationResult
+        {
+            public string DnaSequence { get; set; }
+            public string CompensatingSubword { get; set; }
+            public SubwordsGraph Graph { get; set; }
+            public string DeletedSubword { get; set; }
         }
     }
 }

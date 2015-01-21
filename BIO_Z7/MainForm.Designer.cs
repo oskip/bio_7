@@ -53,7 +53,7 @@ namespace BIO_Z7
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.inputBox);
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "DNA";
             this.ResumeLayout(false);
 
         }
