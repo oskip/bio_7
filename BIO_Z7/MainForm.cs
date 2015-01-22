@@ -70,16 +70,16 @@ namespace BIO_Z7
             {
                 var collection = SubwordFactory.CreateFromInput(inputBox.Text);
                 var graph = SubwordsGraphAdapter.GetGraph(collection);
-                var result = graph.GetDnaSequenceWithCompensation();
-                if (result.CompensatingSubword != null && result.DeletedSubword != null)
+                var result = graph.GetDnaSequenceWithCompensation(level);
+                if (result.CompensatingSubwords != null && result.DeletedSubwords != null)
                     MessageBox.Show(string.Format(@"Kompensacja przez usunięcie: {0} oraz dodanie {1} dała sekwencję: {2}", 
-                        result.DeletedSubword.ToString(), result.CompensatingSubword.ToString(), result.DnaSequence),
+                        string.Join(",",result.DeletedSubwords), result.CompensatingSubwords, result.DnaSequence),
                         @"Wynik", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else if (result.CompensatingSubword != null)
-                    MessageBox.Show(string.Format(@"Kompensacja przez dodanie: {0} dała sekwencję: {1}", result.CompensatingSubword.ToString(), result.DnaSequence), 
+                else if (result.CompensatingSubwords != null)
+                    MessageBox.Show(string.Format(@"Kompensacja przez dodanie: {0} dała sekwencję: {1}", result.CompensatingSubwords, result.DnaSequence), 
                                     @"Wynik", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else if (result.DeletedSubword != null)
-                    MessageBox.Show(string.Format(@"Kompensacja przez usunięcie: {0} dała sekwencję: {1}", result.DeletedSubword.ToString(), result.DnaSequence),
+                else if (result.DeletedSubwords != null)
+                    MessageBox.Show(string.Format(@"Kompensacja przez usunięcie: {0} dała sekwencję: {1}", result.DeletedSubwords, result.DnaSequence),
                                     @"Wynik", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (NoEulerianTrailException e)

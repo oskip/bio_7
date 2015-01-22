@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdjacencyGraphExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Exceptions\BadSymbolException.cs" />
     <Compile Include="Exceptions\InconsistentSubwordLengthException.cs" />
     <Compile Include="Exceptions\NoEulerianTrailException.cs" />

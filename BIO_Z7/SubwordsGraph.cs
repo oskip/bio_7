@@ -82,13 +82,13 @@ namespace BIO_Z7
             return TrailToDnaSequence(eulerianTrail);
         }
 
-        public CompensationResult GetDnaSequenceWithCompensation()
+        public CompensationResult GetDnaSequenceWithCompensation(int level)
         {
-            //B³êdy pozytywne - usuniêcie losowego s³owa            
-            foreach (var subword in SubwordsCollection.ToList())
+            //B³êdy pozytywne - usuniêcie losowych s³ów            
+            foreach (var subword in SubwordsCollection.ToList().GetCombinations(level))
             {
                 var shortenedSubwordsCollection = SubwordsCollection.ToList();
-                shortenedSubwordsCollection.Remove(subword);
+                shortenedSubwordsCollection.RemoveAll(e => subword.Contains(e));
                 var shortenedGraph = SubwordsGraphAdapter.GetGraph(shortenedSubwordsCollection);
                 try
                 {
@@ -96,17 +96,17 @@ namespace BIO_Z7
                     {
                         Graph = shortenedGraph,
                         DnaSequence = shortenedGraph.GetDnaSequence(),
-                        CompensatingSubword = null,
-                        DeletedSubword = subword.ToString()
+                        CompensatingSubwords = null,
+                        DeletedSubwords = string.Join(",",subword.Select(e => e.ToString()))
                     };
                 }
                 catch (NoEulerianTrailException) { }
             }
-            //B³êdy negatywne - dodanie losowego s³owa
-            foreach (var subword in SubwordFactory.GenerateAllPossible(k))
+            //B³êdy negatywne - dodanie losowych s³ów
+            foreach (var subword in SubwordFactory.GenerateAllPossible(k).GetCombinations(level))
             {
                 var extenderSubwordsCollection = SubwordsCollection.ToList();
-                extenderSubwordsCollection.Add(subword);
+                extenderSubwordsCollection.AddRange(subword);
                 var extendedGraph = SubwordsGraphAdapter.GetGraph(extenderSubwordsCollection);
                 try
                 {
@@ -114,20 +114,20 @@ namespace BIO_Z7
                     {
                         Graph = extendedGraph,
                         DnaSequence = extendedGraph.GetDnaSequence(),
-                        CompensatingSubword = subword.ToString(),
-                        DeletedSubword = null
+                        CompensatingSubwords = string.Join(",",subword.Select(e => e.ToString())),
+                        DeletedSubwords = null
                     };
                 }
                 catch (NoEulerianTrailException) {}
             }
             //B³êdy pozytywne i negatywne - usuniêcie i dodanie losowego s³owa
-            foreach (var deletedSubword in SubwordsCollection.ToList())
+            foreach (var deletedSubwords in SubwordsCollection.ToList().GetCombinations(level))
             {
-                foreach (var addedSubword in SubwordFactory.GenerateAllPossible(k))
+                foreach (var addedSubwords in SubwordFactory.GenerateAllPossible(k).GetCombinations(level))
                 {
                     var alteredSubwordsCollection = SubwordsCollection.ToList();
-                    alteredSubwordsCollection.Remove(deletedSubword);                    
-                    alteredSubwordsCollection.Add(addedSubword);
+                    alteredSubwordsCollection.RemoveAll(e => deletedSubwords.Contains(e));                    
+                    alteredSubwordsCollection.AddRange(addedSubwords);
                     var extendedGraph = SubwordsGraphAdapter.GetGraph(alteredSubwordsCollection);
                     try
                     {
@@ -135,8 +135,8 @@ namespace BIO_Z7
                         {
                             Graph = extendedGraph,
                             DnaSequence = extendedGraph.GetDnaSequence(),
-                            CompensatingSubword = addedSubword.ToString(),
-                            DeletedSubword = deletedSubword.ToString()
+                            CompensatingSubwords = string.Join(",",addedSubwords.Select(e => e.ToString())),
+                            DeletedSubwords = string.Join(",", deletedSubwords.Select(e => e.ToString()))
                         };
                     }
                     catch (NoEulerianTrailException) {}
@@ -148,9 +148,9 @@ namespace BIO_Z7
         public struct CompensationResult
         {
             public string DnaSequence { get; set; }
-            public string CompensatingSubword { get; set; }
+            public string CompensatingSubwords { get; set; }
             public SubwordsGraph Graph { get; set; }
-            public string DeletedSubword { get; set; }
+            public string DeletedSubwords { get; set; }
         }
     }
 }

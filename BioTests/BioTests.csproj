@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="SubwordGraphTests.cs" />
     <Compile Include="TestUtils.cs" />
+    <Compile Include="ExtensionsTest.cs" />
     <None Include="packages.config" />
     <Compile Include="SubwordTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
